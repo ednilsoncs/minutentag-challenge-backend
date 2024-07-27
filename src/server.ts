@@ -4,11 +4,14 @@ import express, { NextFunction, Request, Response } from 'express';
 import routes from './routes'
 import AppError from '../src/shared/errors/AppError';
 const path = require('path')
-
+import cors from 'cors';
 const app = express();
+
+app.use(cors());
+app.use(express.json());
 app.use('/file', express.static(path.join(__dirname, 'assets')))
 app.use('/api', routes)
-app.use(express.json());
+
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppError) {
     return response
